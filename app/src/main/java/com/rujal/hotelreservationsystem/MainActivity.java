@@ -61,6 +61,8 @@ public class MainActivity extends AppCompatActivity {
         tvTotalAmount = findViewById(R.id.tvTotalAmount);
 
         selectRoomSpinner = findViewById(R.id.spinSelectRoom);
+
+        btnCalculate = findViewById(R.id.btnCalculate);
     }
 
     @TargetApi(26)
