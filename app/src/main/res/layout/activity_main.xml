@@ -73,21 +73,24 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal" >
+
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="Adult Number"
-            android:id="@+id/etAdultNumber" />
+            android:hint="Number of Rooms"
+            android:id="@+id/etNumberOfRooms" />
+
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="Room Number"
-            android:id="@+id/etRoomNumer" />
+            android:hint="Number of Adults"
+            android:id="@+id/etNumberOfAdults" />
+
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="Child"
-            android:id="@+id/child" />
+            android:hint="Number of Childs"
+            android:id="@+id/etNumberOfChilds" />
 
     </LinearLayout>
 
@@ -149,6 +152,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Calculate"
+        android:id="@+id/btnCalculate"
         />
 
 
