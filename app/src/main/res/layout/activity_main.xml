@@ -77,19 +77,22 @@
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="Number of Rooms"
+            android:hint="No. of Rooms"
+            android:inputType="number"
             android:id="@+id/etNumberOfRooms" />
 
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="Number of Adults"
+            android:inputType="number"
+            android:hint="No. of Adults"
             android:id="@+id/etNumberOfAdults" />
 
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="Number of Childs"
+            android:inputType="number"
+            android:hint="No. of Childs"
             android:id="@+id/etNumberOfChilds" />
 
     </LinearLayout>
@@ -104,17 +107,6 @@
         app:layout_constraintTop_toTopOf="parent"
         style="@style/globalValueStyle"
         android:id="@+id/tvNetAmount"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Service Charge: "
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        style="@style/globalValueStyle"
-        android:id="@+id/tvServiceChargeAmount"/>
 
     <TextView
         android:layout_width="match_parent"
