@@ -1,6 +1,5 @@
 package com.rujal.hotelreservationsystem;
 
-import android.annotation.TargetApi;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
@@ -19,12 +18,11 @@ import java.util.Calendar;
 public class MainActivity extends AppCompatActivity {
 
     TextView tvSelectCheckInDate, tvSelectedCheckInDate, tvSelectCheckOutDate, tvSelectedCheckOutDate, tvValidationMessage;
-    TextView tvAmount, tvServiceChargeAmount, tvVatAmount, tvTotalAmount;
+    TextView tvAmount, tvVatAmount, tvTotalAmount;
     Spinner selectRoomSpinner;
     EditText etNumberOfAdults, etNumberOfRooms, etNumberOfChilds;
     Button btnCalculate;
 
-    final float serviceChargeInPercentage = 10;
     final float vatInPercentage = 13;
     final String[] roomType = Arrays.stream(RoomType.values())
             .map(RoomType::getDisplayText)
@@ -52,27 +50,23 @@ public class MainActivity extends AppCompatActivity {
         btnCalculate.setOnClickListener(i -> calculate());
     }
 
-    @TargetApi(26)
     private void calculate() {
-        if (checkIfAllRequiredFieldsAreFilled() && checkIfAllRequiredFieldsAreValid()) {
+        if (checkIfAllRequiredFieldsAreFilled() && checkIfAllRequiredFieldsAreValid() && ChronoUnit.DAYS.between(checkInDate.toInstant(), checkOutDate.toInstant()) > 0) {
             resetAllAmounts();
             float numberOfRooms = Float.valueOf(etNumberOfRooms.getText().toString());
-            float numberOfAdults = Float.valueOf(etNumberOfRooms.getText().toString());
-            float numberOfChilds = Float.valueOf(etNumberOfRooms.getText().toString());
             float costOfPerRoom = getCostOfRoom(RoomType.valueOfLabel(selectRoomSpinner.getSelectedItem().toString()));
-            long daysStaying = ChronoUnit.DAYS.between(checkOutDate.toInstant(), checkInDate.toInstant());
+            long daysStaying = ChronoUnit.DAYS.between(checkInDate.toInstant(), checkOutDate.toInstant());
 
             if (costOfPerRoom == 0) {
                 tvValidationMessage.setText("Please enter valid values");
                 return;
             }
 
-            float amount = numberOfRooms * costOfPerRoom * numberOfAdults * daysStaying * numberOfChilds;
-            float serviceChargeAmount = serviceChargeInPercentage/100 * amount;
-            float vatAmount = vatInPercentage/100 * (amount + serviceChargeAmount);
-            float totalAmount = amount + serviceChargeAmount + vatAmount;
+            float amount = numberOfRooms * costOfPerRoom * daysStaying ;
+            float vatAmount = vatInPercentage/100 * (amount);
+            float totalAmount = amount + vatAmount;
 
-            setAllAmountsInUI(amount, serviceChargeAmount, vatAmount, totalAmount);
+            setAllAmountsInUI(amount, vatAmount, totalAmount);
 
         } else {
             tvValidationMessage.setText("Please enter valid values");
@@ -81,17 +75,15 @@ public class MainActivity extends AppCompatActivity {
 
     private void resetAllAmounts() {
         tvAmount.setText("Amount: ");
-        tvServiceChargeAmount.setText("Service Charge: ");
         tvVatAmount.setText("Vat Amount: ");
         tvTotalAmount.setText("Total Amount: ");
         tvValidationMessage.setText("");
     }
 
-    private void setAllAmountsInUI(float amount, float serviceChargeAmount, float vatAmount, float totalAmount) {
-        tvAmount.setText(tvAmount.getText().toString().concat(amount + ""));
-        tvServiceChargeAmount.setText(tvServiceChargeAmount.getText().toString().concat(serviceChargeAmount + ""));
-        tvVatAmount.setText(tvVatAmount.getText().toString().concat(vatAmount + ""));
-        tvTotalAmount.setText(tvTotalAmount.getText().toString().concat(totalAmount + ""));
+    private void setAllAmountsInUI(float amount, float vatAmount, float totalAmount) {
+        tvAmount.setText(tvAmount.getText().toString().concat(String.format("%.2f", amount)));
+        tvVatAmount.setText(tvVatAmount.getText().toString().concat(String.format("%.2f", vatAmount)));
+        tvTotalAmount.setText(tvTotalAmount.getText().toString().concat(String.format("%.2f", totalAmount)));
     }
 
     private float getCostOfRoom(RoomType roomType) {
@@ -123,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
         System.out.println(selectRoomSpinner.getSelectedItem());
         return !tvSelectedCheckInDate.getText().toString().isEmpty() &&
                 !tvSelectedCheckOutDate.getText().toString().isEmpty() &&
-                !String.valueOf(selectRoomSpinner.getSelectedItem()).equals(roomType[0]) &&
+                !String.valueOf(selectRoomSpinner.getSelectedItem()).equals(RoomType.NONE) &&
                 !etNumberOfRooms.getText().toString().isEmpty() &&
                 !etNumberOfAdults.getText().toString().isEmpty() &&
                 !etNumberOfChilds.getText().toString().isEmpty();
@@ -140,7 +132,6 @@ public class MainActivity extends AppCompatActivity {
         etNumberOfRooms = findViewById(R.id.etNumberOfRooms);
 
         tvAmount = findViewById(R.id.tvNetAmount);
-        tvServiceChargeAmount = findViewById(R.id.tvServiceChargeAmount);
         tvVatAmount = findViewById(R.id.tvVatAmount);
         tvTotalAmount = findViewById(R.id.tvTotalAmount);
 
@@ -151,7 +142,6 @@ public class MainActivity extends AppCompatActivity {
         btnCalculate = findViewById(R.id.btnCalculate);
     }
 
-    @TargetApi(26)
     private void addCheckInCheckOutDate(TextView textView, Calendar variableToSet) {
         final Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
