@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
         tvSelectCheckOutDate.setOnClickListener(i -> addCheckInCheckOutDate(tvSelectedCheckOutDate, checkOutDate));
         tvSelectCheckInDate.setOnClickListener(i -> addCheckInCheckOutDate(tvSelectedCheckInDate, checkInDate));
-        
+
         btnCalculate.setOnClickListener(i -> calculate());
     }
 
@@ -62,8 +62,8 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
 
-            float amount = numberOfRooms * costOfPerRoom * daysStaying ;
-            float vatAmount = vatInPercentage/100 * (amount);
+            float amount = numberOfRooms * costOfPerRoom * daysStaying;
+            float vatAmount = vatInPercentage / 100 * (amount);
             float totalAmount = amount + vatAmount;
 
             setAllAmountsInUI(amount, vatAmount, totalAmount);
@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
 
             return true;
         } catch (Exception e) {
-            return  false;
+            return false;
         }
     }
 
@@ -153,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 variableToSet.set(year, month, dayOfMonth);
-                textView.setText( month + "/" + dayOfMonth + "/" + year);
+                textView.setText(month + "/" + dayOfMonth + "/" + year);
             }
         }, year, month, day);
 
